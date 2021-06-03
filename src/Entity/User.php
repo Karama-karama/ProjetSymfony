@@ -4,6 +4,8 @@ namespace App\Entity;
 
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -61,6 +63,22 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $Age;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Condidature::class, mappedBy="IdCondidat", orphanRemoval=true)
+     */
+    private $IdCondidature;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="IdRecriteur", orphanRemoval=true)
+     */
+    private $IdAnnonce;
+
+    public function __construct()
+    {
+        $this->IdCondidature = new ArrayCollection();
+        $this->IdAnnonce = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -207,6 +225,66 @@ class User implements UserInterface
         if (!in_array($roles, $this->roles)){
             $this->roles[]=$roles;
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Condidature[]
+     */
+    public function getIdCondidature(): Collection
+    {
+        return $this->IdCondidature;
+    }
+
+    public function addIdCondidature(Condidature $idCondidature): self
+    {
+        if (!$this->IdCondidature->contains($idCondidature)) {
+            $this->IdCondidature[] = $idCondidature;
+            $idCondidature->setIdCondidat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdCondidature(Condidature $idCondidature): self
+    {
+        if ($this->IdCondidature->removeElement($idCondidature)) {
+            // set the owning side to null (unless already changed)
+            if ($idCondidature->getIdCondidat() === $this) {
+                $idCondidature->setIdCondidat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Annonce[]
+     */
+    public function getIdAnnonce(): Collection
+    {
+        return $this->IdAnnonce;
+    }
+
+    public function addIdAnnonce(Annonce $idAnnonce): self
+    {
+        if (!$this->IdAnnonce->contains($idAnnonce)) {
+            $this->IdAnnonce[] = $idAnnonce;
+            $idAnnonce->setIdRecriteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdAnnonce(Annonce $idAnnonce): self
+    {
+        if ($this->IdAnnonce->removeElement($idAnnonce)) {
+            // set the owning side to null (unless already changed)
+            if ($idAnnonce->getIdRecriteur() === $this) {
+                $idAnnonce->setIdRecriteur(null);
+            }
+        }
+
         return $this;
     }
 }
