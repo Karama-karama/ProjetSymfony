@@ -4,13 +4,42 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <title>{% block title %}Welcome!{% endblock %}</title>
-     <nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <span class="navbar-brand mb-0 h1">Projet</span>
-  {% if app.user %}
+
+     <nav class="navbar navbar-expand-sm navbar-light bg-light" >
+
+ <a class="navbar-brand" href="#">WebSiteName</a>
+   {% if app.user %}
   <div class="collapse navbar-collapse" id="mobile-nav">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
       You are logged in as {{app.user.email}}
+      {# Les boutons pour le condidats #}
+      {% if is_granted('ROLE_CONDIDAT') == true  %}
+        <a class="nav-link" href="/condidature"> Mes condidatures <span class="sr-only"></span></a>
+        {% endif %}
+        {% if is_granted('ROLE_CONDIDAT') == true  %}
+        <a class="nav-link" href="/entretien"> Mes entretiens <span class="sr-only"></span></a>
+        {% endif %}
+        {% if is_granted('ROLE_CONDIDAT') == true  %}
+        <a class="nav-link" href="/confirmation"> Mes confirmations <span class="sr-only"></span></a>
+        {% endif %}
+      {# Les boutons pour le recruteur #}
+         {% if is_granted('ROLE_RECRUTEUR') == true  %}
+        <a class="nav-link" href="/condidature"> Les condidatures <span class="sr-only"></span></a>
+        {% endif %}
+         {% if is_granted('ROLE_RECRUTEUR') == true  %}
+        <a class="nav-link" href="/annonce"> Mes annonces <span class="sr-only"></span></a>
+        {% endif %}
+        {% if is_granted('ROLE_RECRUTEUR') == true  %}
+        <a class="nav-link" href="/entretien"> Entretiens <span class="sr-only"></span></a>
+        {% endif %}
+        {% if is_granted('ROLE_RECRUTEUR') == true  %}
+        <a class="nav-link" href="/confirmation"> Confirmations <span class="sr-only"></span></a>
+        {% endif %}
+        
+        
+        
+        
         <a class="nav-link" href="/logout"> Logout <span class="sr-only"></span></a>
       </li>
       </ul>

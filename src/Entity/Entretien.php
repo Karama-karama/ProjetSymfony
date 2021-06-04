@@ -32,6 +32,12 @@ class Entretien
      */
     private $Message;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Condidature::class, inversedBy="IdEntretien", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $IdCondidature;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,5 +77,21 @@ class Entretien
         $this->Message = $Message;
 
         return $this;
+    }
+
+    public function getIdCondidature(): ?Condidature
+    {
+        return $this->IdCondidature;
+    }
+
+    public function setIdCondidature(Condidature $IdCondidature): self
+    {
+        $this->IdCondidature = $IdCondidature;
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->Message;
     }
 }

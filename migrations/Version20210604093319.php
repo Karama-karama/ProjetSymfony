@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210603074629 extends AbstractMigration
+final class Version20210604093319 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,9 @@ final class Version20210603074629 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, adresse_ville VARCHAR(255) NOT NULL, num_telephone VARCHAR(255) NOT NULL, age INT NOT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE entretien ADD id_condidature_id INT NOT NULL');
+        $this->addSql('ALTER TABLE entretien ADD CONSTRAINT FK_2B58D6DA7192A435 FOREIGN KEY (id_condidature_id) REFERENCES condidature (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_2B58D6DA7192A435 ON entretien (id_condidature_id)');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +32,8 @@ final class Version20210603074629 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE user');
+        $this->addSql('ALTER TABLE entretien DROP FOREIGN KEY FK_2B58D6DA7192A435');
+        $this->addSql('DROP INDEX UNIQ_2B58D6DA7192A435 ON entretien');
+        $this->addSql('ALTER TABLE entretien DROP id_condidature_id');
     }
 }

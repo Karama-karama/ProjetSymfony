@@ -74,6 +74,11 @@ class Condidature
      */
     private $IdCondidat;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Entretien::class, mappedBy="IdCondidature", cascade={"persist", "remove"})
+     */
+    private $IdEntretien;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -209,5 +214,26 @@ class Condidature
         $this->IdCondidat = $IdCondidat;
 
         return $this;
+    }
+
+    public function getIdEntretien(): ?Entretien
+    {
+        return $this->IdEntretien;
+    }
+
+    public function setIdEntretien(Entretien $IdEntretien): self
+    {
+        // set the owning side of the relation if necessary
+        if ($IdEntretien->getIdCondidature() !== $this) {
+            $IdEntretien->setIdCondidature($this);
+        }
+
+        $this->IdEntretien = $IdEntretien;
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->NomCondidat;
     }
 }
