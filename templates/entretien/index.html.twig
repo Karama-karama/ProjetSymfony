@@ -18,6 +18,7 @@
         <tbody>
         {% for entretien in entretiens %}
             <tr>
+                {% if entretien.IdCondidature == app.user.getIdCondidature()  %}
                 <td>{{ entretien.id }}</td>
                 <td>{{ entretien.Date ? entretien.Date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ entretien.Emplacement }}</td>
@@ -30,6 +31,7 @@
                     <a href="{{ path('confirmation_new') }}"> Confirmer</a>
 
                 </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

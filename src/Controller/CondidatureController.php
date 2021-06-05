@@ -21,9 +21,20 @@ class CondidatureController extends AbstractController
      */
     public function index(CondidatureRepository $condidatureRepository): Response
     {
-        return $this->render('condidature/index.html.twig', [
+        // Index recruteur
+        $this->denyAccessUnlessGranted('ROLE_CONDIDAT', null, 'Unable to access this page!');
+        { 
+            return $this->render('condidature/index.html.twig', [
+                'condidatures' => $condidatureRepository->findAll(),
+            ]);
+        }
+        // Index Condidat
+        $this->denyAccessUnlessGranted('ROLE_RECRUTEUR', null, 'Unable to access this page!');
+        { 
+            return $this->render('condidature/index.html.twig', [
             'condidatures' => $condidatureRepository->findAll(),
         ]);
+        }
     }
 
     /**

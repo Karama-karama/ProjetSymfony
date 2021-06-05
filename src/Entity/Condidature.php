@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use App\Entity\User;
 use App\Repository\CondidatureRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -236,4 +236,6 @@ class Condidature
     {
         return $this->NomCondidat;
     }
+    
+    
 }
