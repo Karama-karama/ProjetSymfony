@@ -13,6 +13,7 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
       You are logged in as {{app.user.email}}
+      <a class="nav-link" href="/user"> {{app.user.email}} <span class="sr-only"></span></a>
       {# Les boutons pour le condidats #}
       {% if is_granted('ROLE_CONDIDAT') == true  %}
         <a class="nav-link" href="/condidature"> Mes condidatures <span class="sr-only"></span></a>
