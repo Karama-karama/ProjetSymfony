@@ -74,6 +74,11 @@ class User implements UserInterface
      */
     private $IdAnnonce;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Photo;
+
     public function __construct()
     {
         $this->IdCondidature = new ArrayCollection();
@@ -290,6 +295,18 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->Nom;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->Photo;
+    }
+
+    public function setPhoto(?string $Photo): self
+    {
+        $this->Photo = $Photo;
+
+        return $this;
     }
     
     

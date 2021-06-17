@@ -45,6 +45,10 @@
                 <th>Age</th>
                 <td>{{ user.Age }}</td>
             </tr>
+            <tr>
+                <th>Photo</th>
+               <td><img src="{{ asset('/uploads/photo/' ~ app.user.Photo) }}" alt="" width="150"></td>
+            </tr>
             
         </tbody>
     </table>

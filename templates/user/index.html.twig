@@ -10,13 +10,13 @@
             <tr>
                 <th>Id</th>
                 <th>Email</th>
-                <th>Roles</th>
-                <th>Password</th>
+               {#<th>Password</th> #} 
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>AdresseVille</th>
                 <th>NumTelephone</th>
                 <th>Age</th>
+                <th>Photo</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -30,6 +30,8 @@
                 <td>{{ app.user.AdresseVille }}</td>
                 <td>{{ app.user.NumTelephone }}</td>
                 <td>{{ app.user.Age }}</td>
+                <td><img src="{{ asset('/uploads/photo/' ~ app.user.Photo) }}" alt="" width="150"></td>
+
                 <td>
                     <a href="{{ path('user_show', {'id': app.user.id}) }}">show</a>
                     <a href="{{ path('user_edit', {'id': app.user.id}) }}">edit</a>
