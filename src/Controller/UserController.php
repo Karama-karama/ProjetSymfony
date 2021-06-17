@@ -87,7 +87,6 @@ class UserController extends AbstractController
             }
             $user->setPhoto($newFilename);
         }
-        
         ///////////////////////////////////////////////////
             $this->getDoctrine()->getManager()->flush();
 
