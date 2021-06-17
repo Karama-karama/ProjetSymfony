@@ -79,6 +79,16 @@ class User implements UserInterface
      */
     private $Photo;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $NbrCandidature;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Regle::class)
+     */
+    private $Regle;
+
     public function __construct()
     {
         $this->IdCondidature = new ArrayCollection();
@@ -305,6 +315,30 @@ class User implements UserInterface
     public function setPhoto(?string $Photo): self
     {
         $this->Photo = $Photo;
+
+        return $this;
+    }
+
+    public function getNbrCandidature(): ?int
+    {
+        return $this->NbrCandidature;
+    }
+
+    public function setNbrCandidature(?int $NbrCandidature): self
+    {
+        $this->NbrCandidature = $NbrCandidature;
+
+        return $this;
+    }
+
+    public function getRegle(): ?Regle
+    {
+        return $this->Regle;
+    }
+
+    public function setRegle(?Regle $Regle): self
+    {
+        $this->Regle = $Regle;
 
         return $this;
     }

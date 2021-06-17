@@ -33,8 +33,14 @@
                     {% if is_granted('ROLE_RECRUTEUR') == true  %}
                     <a href="{{ path('annonce_edit', {'id': annonce.id}) }}">edit</a>
                     {% endif %}
+                    
+                    {# PARTIE CONDIDAT #}
+
                     {% if is_granted('ROLE_CONDIDAT') == true  %}
+                    {#Tester le nbr candidature#}
+                    {% if app.user.NbrCandidature > app.user.Regle %}
                     <a href="{{ path('condidature_new', {'id': annonce.id}) }}">Create Condidature</a>
+                    {% endif %}
                     {% endif %}
                 </td>
             </tr>
@@ -43,6 +49,16 @@
                 <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
+                   {#Afficher Alerte si NbCondidature > Regle #}
+                   {% if app.user.NbrCandidature < app.user.Regle %}
+                   
+                   <script type="text/javascript">
+		            var msg =" Nombre de condidature :/ , essayer de supprimer une condidature ! "
+		            alert (msg);
+                    
+                    
+	                </script>
+                    {% endif %}
         </tbody>
     </table>
 {% if is_granted('ROLE_RECRUTEUR') == true  %}

@@ -65,6 +65,8 @@ class Annonce
      */
     private $IdCategorie;
 
+    
+
     public function __construct()
     {
         $this->IdCondidature = new ArrayCollection();
@@ -217,4 +219,8 @@ class Annonce
     {
         return $this->Titre;
     }
+
+    
+
+    
 }
