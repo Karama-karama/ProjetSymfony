@@ -70,10 +70,9 @@ class UserController extends AbstractController
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
-        // ********** Upload photo ************************
-        /*$photo = $form->get('Photo')->getData();
-
+        if ($form->isSubmitted() && $form->isValid()) {
+            // ********** Upload photo ************************
+        $photo = $form->get('Photo')->getData();
         if ($photo) {
             $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
@@ -88,10 +87,8 @@ class UserController extends AbstractController
             }
             $user->setPhoto($newFilename);
         }
-        */
+        
         ///////////////////////////////////////////////////
-
-        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('user_index');
