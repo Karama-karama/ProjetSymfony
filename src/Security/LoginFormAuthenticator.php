@@ -9,8 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -41,8 +41,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function supports(Request $request)
     {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route')
-            && $request->isMethod('POST');
+        return (
+            self::LOGIN_ROUTE === $request->attributes->get('_route')
+            && $request->isMethod('POST')
+        );
     }
 
     public function getCredentials(Request $request)
@@ -70,7 +72,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {
-            throw new UsernameNotFoundException('Email could not be found.');
+            // fail authentication with a custom error
+            throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
         return $user;
@@ -95,11 +98,35 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('app_login'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        $user = $token->getUser();
+        
+        if (!$user instanceof User) {
+            return;
+        }
+
+        $date = $user->getDateLogin();
+
+        if ($date instanceof \DateTime) { 
+          $date->add(new \DateInterval('P30D'));
+          $expiredDate = $date->format('d-m-Y');
+          $now = new \DateTime();
+          $now = $now->format('d-m-Y');
+          if ($expiredDate >= $now) {
+            $user->setDateLogin(new \DateTime());
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+    
+            return new RedirectResponse($this->urlGenerator->generate('app_dispatch'));    
+          } else {
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+            return new RedirectResponse($this->urlGenerator->generate('app_register'));    
+          }
+        }
     }
 
-    protected function getLoginUrl()
+    public function getLoginUrl()
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }

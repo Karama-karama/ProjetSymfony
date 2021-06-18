@@ -12,6 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 class AnnonceCrudController extends AbstractCrudController
 {
@@ -20,7 +23,15 @@ class AnnonceCrudController extends AbstractCrudController
         return Annonce::class;
     }
 
-    
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_INDEX, Action::EDIT) 
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+
+        ;
+    } 
 
     
     public function configureFields(string $pageName): iterable

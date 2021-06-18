@@ -22,6 +22,11 @@ class Regle
      */
     private $NbrMax;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $DateExpiration;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class Regle
     public function setNbrMax(int $NbrMax): self
     {
         $this->NbrMax = $NbrMax;
+
+        return $this;
+    }
+
+    public function getDateExpiration(): ?int
+    {
+        return $this->DateExpiration;
+    }
+
+    public function setDateExpiration(?int $DateExpiration): self
+    {
+        $this->DateExpiration = $DateExpiration;
 
         return $this;
     }

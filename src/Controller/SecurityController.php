@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,20 +14,6 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->isGranted('ROLE_ADMIN')) 
-        {
-            return $this->redirectToRoute('admin');
-        }
-        else if ($this->isGranted('ROLE_RECRUTEUR')) 
-        {
-           return $this->redirectToRoute('annonce_index');
-           
-       } 
-       else if ($this->isGranted('ROLE_CONDIDAT'))
-       {
-           return $this->redirectToRoute('home_page');
-       }
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

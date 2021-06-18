@@ -89,6 +89,11 @@ class User implements UserInterface
      */
     private $Regle;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $DateLogin;
+
     public function __construct()
     {
         $this->IdCondidature = new ArrayCollection();
@@ -339,6 +344,18 @@ class User implements UserInterface
     public function setRegle(?Regle $Regle): self
     {
         $this->Regle = $Regle;
+
+        return $this;
+    }
+
+    public function getDateLogin(): ?\DateTimeInterface
+    {
+        return $this->DateLogin;
+    }
+
+    public function setDateLogin(?\DateTimeInterface $DateLogin): self
+    {
+        $this->DateLogin = $DateLogin;
 
         return $this;
     }
